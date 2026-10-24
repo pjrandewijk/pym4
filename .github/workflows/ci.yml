@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.10", "3.14"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install .
+      - run: python -m unittest discover -s tests -v
+
+  gnu-m4:
+    name: Same output as GNU m4
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+      - run: sudo apt-get install -y m4
+      - run: python -m pip install .
+      - name: Get Circuit Macros from CTAN
+        run: |
+          curl -fsSL -o cm.zip https://mirrors.ctan.org/graphics/circuit_macros.zip
+          unzip -q cm.zip
+      - name: Compare pym4 with GNU m4
+        run: |
+          m4 --version | head -n 1
+          for f in examples/*.m4; do
+            m4 -I circuit_macros "$f" > gnu.out
+            pym4 -I circuit_macros "$f" > pym4.out
+            diff -u gnu.out pym4.out
+            echo "identical: $f"
+          done

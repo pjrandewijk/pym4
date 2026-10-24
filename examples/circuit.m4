@@ -1,0 +1,21 @@
+.PS
+# A Circuit Macros diagram. Run with:  pym4 -I path/to/circuit_macros examples/circuit.m4
+include(pstricks.m4)
+
+scale=25.4
+
+cct_init
+
+dx = 12.5
+dy = 12.5
+
+O: (0,0)
+
+Vs: source(up_ dy from O,S);            llabel(,\mathbf{V}_s,)
+L:  inductor(right_ 2*dx,,3,,dimen_/5); llabel(,jX_s,)
+Zl: ebox(down_ to (Here.x,O.y));        llabel(,\mathbf{Z}_l,)
+    line to O
+    dot
+    ground
+
+.PE
