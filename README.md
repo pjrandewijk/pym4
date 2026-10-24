@@ -1,7 +1,7 @@
 # pym4
 
 [![CI](https://github.com/pjrandewijk/pym4/actions/workflows/ci.yml/badge.svg)](https://github.com/pjrandewijk/pym4/actions/workflows/ci.yml)
-[![PyPI](https://img.shields.io/pypi/v/pym4)](https://pypi.org/project/pym4/)
+[![PyPI](https://img.shields.io/pypi/v/pym4?label=PyPI)](https://pypi.org/project/pym4/)
 
 A GNU m4 1.4 compatible macro processor written in pure Python: no compiler,
 no `m4.exe`, no dependencies.
