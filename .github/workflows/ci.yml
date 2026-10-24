@@ -32,8 +32,13 @@ jobs:
       - run: sudo apt-get install -y m4
       - run: python -m pip install .
       - name: Get Circuit Macros from CTAN
+        # mirrors.ctan.org picks a random mirror and some fail TLS checks: retry it, then use ctan.net
         run: |
-          curl -fsSL -o cm.zip https://mirrors.ctan.org/graphics/circuit_macros.zip
+          for url in https://mirrors.ctan.org/graphics/circuit_macros.zip \
+                     https://mirrors.ctan.org/graphics/circuit_macros.zip \
+                     https://ctan.net/graphics/circuit_macros.zip; do
+            curl -fsSL -o cm.zip "$url" && break
+          done
           unzip -q cm.zip
       - name: Compare pym4 with GNU m4
         run: |
